@@ -32,6 +32,6 @@ bool Basic_int_stack::empty(){
 
 int Basic_int_stack::size(){
 	if (not this-> empty()){
-	return size(A);
+		return size(A);
 	};
 }

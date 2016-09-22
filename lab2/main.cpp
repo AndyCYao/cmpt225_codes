@@ -4,7 +4,7 @@
 using namespace std;
 
 int main(){
-	cout << "Basic Stack exercise\nAndy Yao\n300164847\n";
+	cout << "Andy Yao\nacyao\n300164847\n";
 	//Input a sequence of numbers.
 	Basic_int_stack stk;
 	int input, sum, length, temp;
