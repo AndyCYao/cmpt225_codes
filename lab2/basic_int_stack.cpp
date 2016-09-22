@@ -3,7 +3,7 @@ Implementation of functions for basic siple array-based implementation of a stac
 */
 
 #include "basic_int_stack.h"
-#include <array>
+
 
 Basic_int_stack::Basic_int_stack(){
 	//default constructor initializes the private variable.
@@ -20,10 +20,9 @@ int Basic_int_stack::top(){
 }
 
 int Basic_int_stack::pop(){
-	if(top_index != -1){
-		top_index = top_index - 1;
-		return A[top_index + 1];
-	};
+	top_index = top_index - 1;
+	return A[top_index + 1];
+
 }
 
 bool Basic_int_stack::empty(){
@@ -31,7 +30,5 @@ bool Basic_int_stack::empty(){
 }
 
 int Basic_int_stack::size(){
-	if (not this-> empty()){
-		return size(A);
-	};
+	return top_index + 1;
 }
