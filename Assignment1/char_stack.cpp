@@ -5,7 +5,6 @@
 */
 #include "char_stack.h"// contains the declarations of the variables and functions.
 
-// Fill this in.
 char_stack::char_stack(){
 	top_index = -1;
 }
