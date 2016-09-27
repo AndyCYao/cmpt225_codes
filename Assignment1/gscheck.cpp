@@ -18,14 +18,14 @@ void printErrorLine(int x, int c_count, char line[250]){
 	char start_line[x];
 	char remaining[x];
 	
-	for(int z = 0; z < x; z++){
+	for(int z = 0; z <= x; z++){
 		start_line[z] = line[z];
 		remaining[z] = ' ';
 	}
 	
-	start_line[x] = '\0';
+	start_line[x + 1] = '\0';
 
-	for(int y = x; y < c_count; y++){
+	for(int y = x + 1; y < c_count; y++){
 		remaining[y] = line[y];
 	}
 
@@ -33,6 +33,9 @@ void printErrorLine(int x, int c_count, char line[250]){
 	  		  << remaining << std::endl;
 }
 
+/*
+	returns the char character corrosponding to the input bracket
+*/
 char findCounterPart(char bracket){
 	if (bracket == '}'){
 		return '{';
@@ -78,7 +81,7 @@ int main(int argc, char * argv[]){
 				c == '['){
 				S.push(c);	
 			}
-			//testing
+
 			else if(c == ')' ||
 					c == '}' ||
 					c == ']'){
@@ -96,53 +99,6 @@ int main(int argc, char * argv[]){
 					}
 				}
 			}	
-			/*	
-			else if(c == ')'){
-				
-				if(S.empty()){
-					std::cout << "Error on line " << l_count << ": Too many " << c << std::endl;
-					isError = true;
-				}
-				else{
-					char l = S.pop();
-					if(l != '('){
-						std::cout << "Error on line " << l_count << ": Read " << c <<
-						", expected " << "(" << std::endl;
-						isError = true;
-					}
-				}
-			}	
-			else if(c == '}'){
-				
-				if(S.empty()){
-					std::cout << "Error on line " << l_count << ": Too many " << c << std::endl;
-					isError = true;
-				}
-				else{
-					char l = S.pop();
-					if(l != '{'){
-						std::cout << "Error on line " << l_count << ": Read " << c <<
-						", expected " << "{" << std::endl;
-						isError = true;
-					}
-				}
-			}
-			else if(c == ']'){
-				
-				if(S.empty()){
-					std::cout << "Error on line " << l_count << ": Too many " << c << std::endl;
-					isError = true;
-				}
-				else{
-					char l = S.pop();
-					if(l != '['){
-						std::cout << "Error on line " << l_count << ": Read " << c <<
-						", expected " << "[" << std::endl;
-						isError = true;
-					}
-				}
-			}
-			*/
 
 			if (isError){
 				/*
@@ -172,7 +128,7 @@ int main(int argc, char * argv[]){
 	if (!S.empty()){
 		c = S.pop();
 		std::cout << "Error on line " << l_count << ": Too many " << c;
-		//printErrorLine(x, c_count , line);
+		printErrorLine(0, c_count , line);
 	}
 	else{
 		std::cout <<"No Errors Found" << std::endl;		
