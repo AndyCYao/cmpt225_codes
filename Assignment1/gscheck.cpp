@@ -3,70 +3,167 @@ Andy Yao
 301064847
 CMPT 225 Assignment 1
 Sept 21st 2016
--To Do List
-	generate the correct error message
+
+Need to decide if printErrorLine stays there, if ifError is necessary, and how to print the line errors.
 */
 
 #include "char_stack.h"
 
 #include <iostream>
 
+/*
+	Generate the line break message
+*/
+void printErrorLine(int x, int c_count, char line[250]){
+	char start_line[x];
+	char remaining[x];
+	
+	for(int z = 0; z < x; z++){
+		start_line[z] = line[z];
+		remaining[z] = ' ';
+	}
+	
+	start_line[x] = '\0';
+
+	for(int y = x; y < c_count; y++){
+		remaining[y] = line[y];
+	}
+
+	std::cout << start_line <<  std::endl 
+	  		  << remaining << std::endl;
+}
+
+char findCounterPart(char bracket){
+	if (bracket == '}'){
+		return '{';
+	}
+	else if (bracket == ')'){
+		return '(';
+	}
+	else if (bracket == ']'){
+		return '[';
+	}
+	else if (bracket == '{'){
+		return '}';
+	}
+	else if (bracket == '('){
+		return ')';
+	}
+	else if (bracket == '['){
+		return ']';
+	}
+}
 
 int main(int argc, char * argv[]){
-	char line[250]; // 250 because spec sheet detailed max 250 char per line.
+	char line[250]; 	// 250 because spec sheet detailed max 250 char per line.
 	char c;
-	int c_count;
+	int l_count = 0;	// number of lines already read
+	int c_count; 		// character count in a line
 	char_stack S;
 
-	std::cout << "Begin of the program \n";
-	
+	bool isError;
+
 	while(!std::cin.peek() == std::cin.eof()){
 		std::cin.getline(line, 250);
 		c_count = std::cin.gcount();
-
-		std::cout<< c_count << std::endl;
+		l_count +=1;
+		//std::cout<< c_count << std::endl << std::endl;
 		//loop through the line
 		for(int x = 0; x < c_count; x++){
 			c = line[x];
-			//std::cout << c;
+			//std::cout << c << " stack size is " << S.size() << std::endl;
 			
 			if (c == '(' || 
 				c == '{' || 
 				c == '['){
 				S.push(c);	
+			}
+			//testing
+			else if(c == ')' ||
+					c == '}' ||
+					c == ']'){
+				
+				if(S.empty()){
+					std::cout << "Error on line " << l_count << ": Too many " << c << std::endl;
+					isError = true;
+				}
+				else{
+					char l = S.pop();
+					if(l != findCounterPart(c)){
+						std::cout << "Error on line " << l_count << ": Read " << c <<
+						", expected " << findCounterPart(l) << std::endl;
+						isError = true;
+					}
+				}
 			}	
+			/*	
 			else if(c == ')'){
 				
 				if(S.empty()){
-					std::cout << "Error, too many " << c;
+					std::cout << "Error on line " << l_count << ": Too many " << c << std::endl;
+					isError = true;
 				}
-				char l = S.pop();
-				if(l != '('){
-					std::cout << "error, read " << l <<
-					" expected " << "(";
+				else{
+					char l = S.pop();
+					if(l != '('){
+						std::cout << "Error on line " << l_count << ": Read " << c <<
+						", expected " << "(" << std::endl;
+						isError = true;
+					}
 				}
 			}	
 			else if(c == '}'){
 				
 				if(S.empty()){
-					std::cout << "Error, too many " << c;
+					std::cout << "Error on line " << l_count << ": Too many " << c << std::endl;
+					isError = true;
 				}
-				char l = S.pop();
-				if(l != '{'){
-					std::cout << "error, read " << l <<
-					" expected " << "{";
+				else{
+					char l = S.pop();
+					if(l != '{'){
+						std::cout << "Error on line " << l_count << ": Read " << c <<
+						", expected " << "{" << std::endl;
+						isError = true;
+					}
 				}
 			}
 			else if(c == ']'){
 				
 				if(S.empty()){
-					std::cout << "Error, too many " << c;
+					std::cout << "Error on line " << l_count << ": Too many " << c << std::endl;
+					isError = true;
 				}
-				char l = S.pop();
-				if(l != ']'){
-					std::cout << "error, read " << l <<
-					" expected " << "[";
+				else{
+					char l = S.pop();
+					if(l != '['){
+						std::cout << "Error on line " << l_count << ": Read " << c <<
+						", expected " << "[" << std::endl;
+						isError = true;
+					}
 				}
+			}
+			*/
+
+			if (isError){
+				/*
+				char start_line[x];
+				char remaining[x];
+				
+				for(int z = 0; z < x; z++){
+					start_line[z] = line[z];
+					remaining[z] = ' ';
+				}
+				
+				start_line[x] = '\0'; 
+
+				for(int y = x; y < c_count; y++){
+					remaining[y] = line[y];
+				}
+				*/
+
+				//std::cout << "Error on line "<< l_count << ": Read " << c << std::endl;
+				printErrorLine(x, c_count ,line);
+				return 0;
 			}
 			
 		}
@@ -74,27 +171,11 @@ int main(int argc, char * argv[]){
 
 	if (!S.empty()){
 		c = S.pop();
-		std::cout << "Error, Too many " << c;
+		std::cout << "Error on line " << l_count << ": Too many " << c;
+		//printErrorLine(x, c_count , line);
 	}
-	std::cout <<"No Errors Found";
+	else{
+		std::cout <<"No Errors Found" << std::endl;		
+	}
 	return 0;
 }
-
-
-
-
-		/*
-		if (c is an opening symbol){
-			S.push(c)
-		}
-		else if (c is a closing symbol){
-			if (S.empty()){
-				std::cout << error "Too many c";
-			}
-			l = S.pop()
-
-			if(l does not match c){
-				std::cout << error - "Read c, expected r";
-			}
-		}
-		*/
